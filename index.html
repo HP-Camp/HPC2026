@@ -262,6 +262,25 @@
     <div style="text-align:right;margin-bottom:8px">
       <button class="tbtn" onclick="openPasswordModal()" id="btnEditMode" style="font-size:11px;padding:5px 12px">✏️ Editar guardias</button>
     </div>
+    <!-- Leyenda de grados -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;background:#fff;border-radius:10px;padding:10px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);">
+      <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:90px">
+        <div style="width:28px;height:28px;border-radius:6px;background:#d0d0d0;flex-shrink:0"></div>
+        <div><div style="font-size:11px;font-weight:700;color:#1a2238">R4</div><div style="font-size:10px;color:#888">Cuarto año</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:90px">
+        <div style="width:28px;height:28px;border-radius:6px;background:#c8d5ef;flex-shrink:0"></div>
+        <div><div style="font-size:11px;font-weight:700;color:#1a2238">R3</div><div style="font-size:10px;color:#888">Tercer año</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:90px">
+        <div style="width:28px;height:28px;border-radius:6px;background:#dce8f5;flex-shrink:0"></div>
+        <div><div style="font-size:11px;font-weight:700;color:#1a2238">R2</div><div style="font-size:10px;color:#888">Segundo año</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;flex:1;min-width:90px">
+        <div style="width:28px;height:28px;border-radius:6px;background:#EEEDFE;flex-shrink:0"></div>
+        <div><div style="font-size:11px;font-weight:700;color:#3C3489">R1</div><div style="font-size:10px;color:#888">Primer año</div></div>
+      </div>
+    </div>
     <div class="gcal">
       <div class="gcal-toolbar">
         <button class="tbtn" onclick="goTodayG()">↩ Hoy</button>
@@ -273,11 +292,7 @@
       <div class="dow-row" id="gcal-g-dow"></div>
       <div class="days-grid" id="gcal-g-days"></div>
     </div>
-    <div id="g-info" style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
-    <div style="margin-top:14px;background:#fff;border-radius:12px;padding:13px 15px;box-shadow:0 1px 4px rgba(0,0,0,0.07)">
-      <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:9px">👨‍⚕️ Residentes</div>
-      <div id="g-legend" style="display:flex;flex-wrap:wrap;gap:6px"></div>
-    </div>
+    <div id="g-info" style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:12px"></div>
   </div>
 
   <!-- PASSWORD MODAL -->
@@ -1119,7 +1134,7 @@ const nameToGrade={
   // Nombres usados en Abril y general
   'Diego':'R4','Emmanuel':'R4','Karen':'R4','Maya':'R4',
   'Anilú':'R3','Héctor':'R3','Sergio':'R3','Victoria':'R3',
-  'Cristi':'R2','Eric':'R2','Alejandro':'R2','Iván':'R2','Nadia':'R2','Luis':'R2',
+  'Cristi':'R2','Alejandro':'R2','Iván':'R2','Nadia':'R2','Luis':'R2',
 };
 
 function renderGInfo(){
