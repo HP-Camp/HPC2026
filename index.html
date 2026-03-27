@@ -551,8 +551,40 @@ const guardiasData = {
       27:['Iván','Ana Karen'],
       28:['Luis','Aimeé','Carmen'],
       29:['Cristi','Maya','María José'],
-      30:['Héctor','Alejandro','Teresa'],
+      30:['Alejandro','Teresa'],
       31:['Nadia','Ana Karen']
+    },
+    6:{
+      1:['Iván','Aimeé','Carmen'],
+      2:['Victoria','Luis','María José'],
+      3:['Maya','Cristi','Teresa'],
+      4:['Alejandro','Ana Karen'],
+      5:['Nadia','Aimeé','Carmen'],
+      6:['Iván','María José'],
+      7:['Victoria','Luis','Teresa'],
+      8:['Maya','Cristi','Alfonso'],
+      9:['Alejandro','Carmen'],
+      10:['Emmanuel','Nadia','María José'],
+      11:['Iván','Teresa'],
+      12:['Victoria','Luis','Alfonso'],
+      13:['Maya','Cristi','Carmen'],
+      14:['Alejandro','María José'],
+      15:['Emmanuel','Nadia','Teresa'],
+      16:['Iván','Alfonso'],
+      17:['Victoria','Luis','Carmen'],
+      18:['Maya','Cristi','María José'],
+      19:['Alejandro','Teresa'],
+      20:['Emmanuel','Nadia','Alfonso'],
+      21:['Iván','Carmen'],
+      22:['Luis','María José'],
+      23:['Maya','Cristi','Teresa'],
+      24:['Alejandro','Ana Karen','Alfonso'],
+      25:['Emmanuel','Nadia','Aimeé','Carmen'],
+      26:['Iván','María José'],
+      27:['Luis','Teresa'],
+      28:['Maya','Cristi','Ana Karen','Alfonso'],
+      29:['Alejandro','Aimeé','Carmen'],
+      30:['Emmanuel','Nadia','María José']
     }
   }
 };
@@ -604,7 +636,7 @@ const vacacionesGuardiasData = {
     3: ['R2 Cristi Martínez — 02 al 13 de marzo','R3 Héctor Martínez — 16 al 27 de marzo'],
     4: ['R2 Iván — 13 al 24 de abril','R4 Maya — 27 abr al 08 de mayo','R2 Nadia — 27 abr al 08 de mayo'],
     5: ['R4 Maya — hasta 08 de mayo','R2 Nadia — hasta 08 de mayo','R2 Alejandro — 11 al 22 de mayo','R4 Emmanuel — 25 may al 05 jun','R1 Alfonso — 25 may al 05 jun'],
-    6: ['R4 Emmanuel — hasta 05 de junio','R2 Alejandro — 08 al 19 de junio','R1 Ana Karen — 08 al 19 de junio','R1 Aimeé — 08 al 19 de junio','R3 Victoria — 22 jun al 03 jul'],
+    6: ['R4 Emmanuel — hasta 05 de junio','R1 Aimeé — 08 al 19 de junio','R1 Ana Karen — 08 al 19 de junio','R3 Victoria — 22 jun al 03 jul','R3 Olga — desde 22 de junio'],
     7: ['R3 Victoria — hasta 03 de julio','R4 Maya — 06 al 17 de julio','R1 Alfonso — 06 al 17 de julio','R1 María José — 06 al 17 de julio','R2 Luis — 20 al 31 de julio','R1 Carmen — 20 al 31 de julio'],
     8: ['R1 Teresa — 14 al 25 de agosto','R4 Emmanuel — 17 al 28 de agosto','R4 Diego — 31 ago al 11 sep','R2 Nadia — 31 ago al 11 sep'],
     9: ['R4 Diego — hasta 11 de septiembre','R2 Nadia — hasta 11 sep','R3 Sergio — 14 al 25 de septiembre','R1 Teresa — 14 al 25 de septiembre','R3 Héctor — 28 sep al 09 oct'],
@@ -714,7 +746,7 @@ function showTab(tab, el) {
   document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
-  el.classList.add('active');
+  if (el) el.classList.add('active');
   if (tab==='guardias')   renderGcalG();
   if (tab==='gcal')       renderGcal();
   if (tab==='cards')      buildCards();
