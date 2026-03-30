@@ -1,6 +1,6 @@
 // Service Worker para PWA de Guardias HPC
 // IMPORTANTE: Incrementar este número cada vez que hagas cambios para forzar actualización
-const CACHE_VERSION = 'v3';  // 👈 CAMBIADO A v3 para forzar actualización
+const CACHE_VERSION = 'v4';  // 👈 CAMBIADO A v3 para forzar actualización
 const CACHE_NAME = `guardias-hpc-${CACHE_VERSION}`;
 
 const urlsToCache = [
