@@ -1,4 +1,4 @@
-const CACHE = 'hpc-guardias-v1';
+const CACHE = 'hpc-guardias-v2';
 const ASSETS = [
   './',
   './index.html',
