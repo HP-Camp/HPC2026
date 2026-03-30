@@ -1,29 +1,97 @@
-const CACHE = 'hpc-guardias-v2';
-const ASSETS = [
+// Service Worker para PWA de Guardias HPC
+// IMPORTANTE: Incrementar este número cada vez que hagas cambios para forzar actualización
+const CACHE_VERSION = 'v3';  // 👈 CAMBIADO A v3 para forzar actualización
+const CACHE_NAME = `guardias-hpc-${CACHE_VERSION}`;
+
+const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
+  './icon-72.png',
+  './icon-96.png',
+  './icon-128.png',
+  './icon-144.png',
+  './icon-152.png',
   './icon-192.png',
-  './icon-512.png',
-  'https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap'
+  './icon-384.png',
+  './icon-512.png'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())
+// Instalación: cachear recursos
+self.addEventListener('install', event => {
+  console.log('[SW] Instalando versión:', CACHE_VERSION);
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('[SW] Cacheando archivos');
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => {
+        // Forzar activación inmediata del nuevo SW
+        return self.skipWaiting();
+      })
   );
 });
 
-self.addEventListener('activate', e => {
-  e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+// Activación: limpiar cachés antiguos
+self.addEventListener('activate', event => {
+  console.log('[SW] Activando versión:', CACHE_VERSION);
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('[SW] Eliminando caché antiguo:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+    .then(() => {
+      // Tomar control de todos los clientes inmediatamente
+      return self.clients.claim();
+    })
   );
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match('./index.html')))
+// Fetch: estrategia Network First con fallback a caché
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Si la respuesta es válida, actualizamos el caché
+        if (response && response.status === 200) {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME)
+            .then(cache => {
+              cache.put(event.request, responseToCache);
+            });
+        }
+        return response;
+      })
+      .catch(() => {
+        // Si falla la red, intentamos servir desde caché
+        return caches.match(event.request)
+          .then(response => {
+            if (response) {
+              return response;
+            }
+            // Si tampoco está en caché, devolvemos error
+            return new Response('Contenido no disponible offline', {
+              status: 503,
+              statusText: 'Service Unavailable',
+              headers: new Headers({
+                'Content-Type': 'text/plain'
+              })
+            });
+          });
+      })
   );
+});
+
+// Escuchar mensajes para forzar actualización
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
