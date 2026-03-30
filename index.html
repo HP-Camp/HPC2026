@@ -1511,5 +1511,72 @@ renderGcalG();
       });
     }
   </script>
-</body>
+
+<!-- BOTÓN DE ACTUALIZACIÓN - Agregar antes de </body> -->
+<button id="updateAppBtn" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; background: linear-gradient(135deg, #534AB7 0%, #7F77DD 100%); color: white; border: none; border-radius: 50px; padding: 12px 20px; font-size: 14px; font-weight: 500; cursor: pointer; box-shadow: 0 4px 12px rgba(83, 74, 183, 0.3); display: flex; align-items: center; gap: 8px; transition: all 0.2s;" onclick="actualizarApp()">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink: 0;">
+    <path d="M13.65 2.35C12.2 0.9 10.21 0 8 0v2c1.66 0 3.14 0.69 4.22 1.78l-1.51 1.51C9.94 4.54 9.02 4.19 8 4.19V6.27c1.52 0 2.9 0.57 3.96 1.5l2.19-2.19C13.65 5.08 13.65 4.58 13.65 2.35zM2.35 13.65C3.8 15.1 5.79 16 8 16v-2c-1.66 0-3.14-0.69-4.22-1.78l1.51-1.51C6.06 11.46 6.98 11.81 8 11.81V9.73c-1.52 0-2.9-0.57-3.96-1.5l-2.19 2.19C2.35 10.92 2.35 11.42 2.35 13.65z" fill="white"/>
+    <circle cx="8" cy="8" r="2" fill="white"/>
+  </svg>
+  <span>Actualizar app</span>
+</button>
+
+<script>
+async function actualizarApp() {
+  if (!confirm('¿Actualizar la aplicación?\n\nEsto limpiará el caché y recargará la página con la versión más reciente.')) {
+    return;
+  }
+  
+  const btn = document.getElementById('updateAppBtn');
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="white" stroke-width="2" fill="none" stroke-dasharray="10" style="animation: spin 1s linear infinite;"/></svg><span>Actualizando...</span>';
+  btn.style.pointerEvents = 'none';
+  btn.style.opacity = '0.7';
+  
+  try {
+    if ('serviceWorker' in navigator) {
+      const registrations = await navigator.serviceWorker.getRegistrations();
+      for (const registration of registrations) {
+        await registration.unregister();
+      }
+    }
+    
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      for (const cacheName of cacheNames) {
+        await caches.delete(cacheName);
+      }
+    }
+    
+    try {
+      localStorage.clear();
+      sessionStorage.clear();
+    } catch (e) {}
+    
+    window.location.reload(true);
+  } catch (error) {
+    alert('Error al actualizar. Por favor, cierra Safari completamente y vuelve a abrir.');
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.65 2.35C12.2 0.9 10.21 0 8 0v2c1.66 0 3.14 0.69 4.22 1.78l-1.51 1.51C9.94 4.54 9.02 4.19 8 4.19V6.27c1.52 0 2.9 0.57 3.96 1.5l2.19-2.19C13.65 5.08 13.65 4.58 13.65 2.35zM2.35 13.65C3.8 15.1 5.79 16 8 16v-2c-1.66 0-3.14-0.69-4.22-1.78l1.51-1.51C6.06 11.46 6.98 11.81 8 11.81V9.73c-1.52 0-2.9-0.57-3.96-1.5l-2.19 2.19C2.35 10.92 2.35 11.42 2.35 13.65z" fill="white"/><circle cx="8" cy="8" r="2" fill="white"/></svg><span>Actualizar app</span>';
+    btn.style.pointerEvents = 'auto';
+    btn.style.opacity = '1';
+  }
+}
+
+const style = document.createElement('style');
+style.textContent = `
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+#updateAppBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(83, 74, 183, 0.4);
+}
+#updateAppBtn:active {
+  transform: scale(0.98);
+}
+`;
+document.head.appendChild(style);
+</script>
+<!-- FIN BOTÓN DE ACTUALIZACIÓN -->
+
+  </body>
 </html>
